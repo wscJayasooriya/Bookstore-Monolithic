@@ -1,0 +1,162 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: author
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 2
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: isbn
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: published_date
+                  type: DATE
+              - column:
+                  name: price
+                  type: DOUBLE(10, 2)
+
+  - changeSet:
+      id: 3
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 4
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 5
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: user_id
+            constraintName: fk_user_roles_user
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: role_id
+            constraintName: fk_user_roles_role
+            referencedTableName: roles
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 6
+      author: Sandun Jayasooriya
+      changes:
+        - createTable:
+            tableName: author_books
+            columns:
+              - column:
+                  name: books_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: author_books
+            baseColumnNames: books_id
+            constraintName: fk_author_books_book
+            referencedTableName: book
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: author_books
+            baseColumnNames: author_id
+            constraintName: fk_author_books_author
+            referencedTableName: author
+            referencedColumnNames: id
+
+
